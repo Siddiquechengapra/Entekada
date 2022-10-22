@@ -62,7 +62,7 @@ export default function HomeScreen() {
                 <p>
                   <strong>${product.price}</strong>
                 </p>
-                <button>Add to cart</button>
+                <button>Addd to cart</button>
               </div>
             </div>
           ))
