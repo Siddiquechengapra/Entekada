@@ -39,3 +39,6 @@ header a {
 .prodinfo {
   padding: 1rem;
 }
+span {
+  color: blue;
+}
