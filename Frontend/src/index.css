@@ -42,3 +42,6 @@ header a {
 span {
   color: blue;
 }
+.img-large {
+  max-width: 100%;
+}
