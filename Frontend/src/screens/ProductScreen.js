@@ -8,9 +8,11 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
-
 import Rating from "../Components/Rating";
-import Loading from '../Components/Loading';
+import Loading from "../Components/Loading";
+import Error from "../Components/Error";
+
+import { getError } from "../utils/Utils";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,7 +21,7 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return { ...state, loading: false, product: action.payload };
     case "FETCH_FAIL":
-      return { ...state, loading: false, error: true };
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
@@ -43,7 +45,7 @@ export default function ProductScreen() {
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
         dataFetcherRef.current = true;
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL" });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     if (dataFetcherRef.current) return;
@@ -52,9 +54,9 @@ export default function ProductScreen() {
   }, [slug]);
 
   return loading ? (
-    <Loading/>
+    <Loading />
   ) : error ? (
-    <div>Error...</div>
+    <Error variant="warning" message={error} />
   ) : (
     <div>
       <Row>
