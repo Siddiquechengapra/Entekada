@@ -26,12 +26,13 @@ function App() {
               <Nav className="me-auto">
                 <Nav.Link href="/cart">
                   Cart
-                  <Badge bg="danger">{ctxState.cart.cartItems.length}</Badge>
+                  <Badge pill bg="danger">
+                    {ctxState.cart.cartItems.length === 0
+                      ? "Empty"
+                      : ctxState.cart.cartItems.length}
+                  </Badge>
                 </Nav.Link>
               </Nav>
-              {/* <Nav className="me-auto">
-                <h1>{`cart ${ctxState.cart.cartItems.length}`}</h1>
-              </Nav> */}
             </Container>
           </Navbar>
         </header>
