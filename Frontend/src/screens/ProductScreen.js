@@ -10,6 +10,7 @@ import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
 
 import Rating from "../Components/Rating";
+import Loading from '../Components/Loading';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,7 +52,7 @@ export default function ProductScreen() {
   }, [slug]);
 
   return loading ? (
-    <div>Loading...</div>
+    <Loading/>
   ) : error ? (
     <div>Error...</div>
   ) : (

@@ -5,6 +5,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Product from "../Components/Product";
 import { Helmet } from "react-helmet-async";
+import Loading from "../Components/Loading";
+import Error from "../Components/Error";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -13,7 +15,7 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return { ...state, loading: false, products: action.payload };
     case "FETCH_FAIL":
-      return { ...state, loading: false, error: true };
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
@@ -33,7 +35,7 @@ export default function HomeScreen() {
         const result = await axios.get("/api/products");
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL" });
+        dispatch({ type: "FETCH_FAIL", payload: err.message });
       }
 
       // setProducts(result.data); // because axios returns a object with config,data,headers,request,status
@@ -46,18 +48,20 @@ export default function HomeScreen() {
   return (
     <div>
       <Helmet>
-        <title>"Home"</title>
+        <title>Home</title>
       </Helmet>
       <h1>Featured Products</h1>
       <div className="products">
         {loading ? (
-          <div>Loading ... </div>
+          <Loading />
         ) : error ? (
-          <div>Error ... </div>
+          <Error variant={"danger"} message={error}>
+            {error}
+          </Error>
         ) : (
           <Row>
             {products.map((product) => (
-              <Col key={product.slug} sm={6} md={4} lg={3}>
+              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
                 <Product product={product} />
               </Col>
             ))}
