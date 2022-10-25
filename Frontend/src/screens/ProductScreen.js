@@ -43,7 +43,7 @@ export default function ProductScreen() {
       dispatch({ type: "FETCH_REQUEST" });
 
       try {
-        const result = await axios.get(`/slug/${slug}`);
+        const result = await axios.get(`/api/slug/${slug}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
         dataFetcherRef.current = true;
       } catch (err) {
@@ -56,8 +56,23 @@ export default function ProductScreen() {
   }, [slug]);
 
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
-  const addToCartHandler = (product) => {
-    ctxDispath({ type: "ADD_TO_CART", payload: { ...product, quantity: 1 } });
+  const addToCartHandler = async (product) => {
+    const existItem = ctxState.cart.cartItems.find(
+      (x) => x._id === product._id
+    );
+
+    const quantity = existItem
+      ? (existItem.quantity = existItem.quantity + 1)
+      : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if (data.countInStock < quantity) {
+      alert("product out of stock");
+      return;
+    }
+    ctxDispath({
+      type: "ADD_TO_CART",
+      payload: { ...product, quantity: quantity },
+    });
   };
 
   return loading ? (
