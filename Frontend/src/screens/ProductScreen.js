@@ -1,5 +1,5 @@
 import React, { useReducer, useRef, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -29,6 +29,7 @@ const reducer = (state, action) => {
 };
 
 export default function ProductScreen() {
+  const navigate = useNavigate();
   const [{ loading, error, product }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -73,12 +74,11 @@ export default function ProductScreen() {
       type: "ADD_TO_CART",
       payload: { ...product, quantity: quantity },
     });
+    navigate("/cart");
   };
- const removeFromCartHandler=async(product)=>{
-
-  ctxDispath({type:"REMOVE_FROM_CART",payload:{...product}})
-
- }
+  const removeFromCartHandler = async (product) => {
+    ctxDispath({ type: "REMOVE_FROM_CART", payload: { ...product } });
+  };
 
   return loading ? (
     <Loading />
@@ -139,12 +139,17 @@ export default function ProductScreen() {
                       >
                         Add to cart
                       </Button>
-                     { ctxState.cart.cartItems.find(x=>x._id===product._id) &&<Button
-                        onClick={() => removeFromCartHandler(product)} className="mt-1"
-                        variant="warning"
-                      >
-                        Remove from cart
-                      </Button>}
+                      {ctxState.cart.cartItems.find(
+                        (x) => x._id === product._id
+                      ) && (
+                        <Button
+                          onClick={() => removeFromCartHandler(product)}
+                          className="mt-1"
+                          variant="warning"
+                        >
+                          Remove from cart
+                        </Button>
+                      )}
                     </div>
                   </ListGroup.Item>
                 )}

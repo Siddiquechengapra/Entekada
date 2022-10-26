@@ -9,6 +9,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useContext } from "react";
 import { Store } from "./utils/StoreProvider";
 import Badge from "react-bootstrap/Badge";
+import CartScreen from "./screens/CartScreen";
 
 function App() {
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
@@ -28,7 +29,10 @@ function App() {
                   <Badge pill bg="danger">
                     {ctxState.cart.cartItems.length === 0
                       ? "Empty"
-                      : ctxState.cart.cartItems.length}
+                      : ctxState.cart.cartItems.reduce(
+                          (a, c) => a + c.quantity,
+                          0
+                        )}
                   </Badge>
                 </Nav.Link>
               </Nav>
@@ -39,7 +43,7 @@ function App() {
           <Container className="mt-3">
             <Routes>
               <Route path="/product/:slug" element={<ProductScreen />} />
-
+              <Route path="/cart" element={<CartScreen />} />
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>
