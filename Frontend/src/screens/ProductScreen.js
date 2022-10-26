@@ -37,6 +37,7 @@ export default function ProductScreen() {
   const params = useParams();
   const { slug } = params;
   const dataFetcherRef = useRef(false);
+  const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +56,6 @@ export default function ProductScreen() {
     fetchData();
   }, [slug]);
 
-  const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
   const addToCartHandler = async (product) => {
     const existItem = ctxState.cart.cartItems.find(
       (x) => x._id === product._id
@@ -74,6 +74,11 @@ export default function ProductScreen() {
       payload: { ...product, quantity: quantity },
     });
   };
+ const removeFromCartHandler=async(product)=>{
+
+  ctxDispath({type:"REMOVE_FROM_CART",payload:{...product}})
+
+ }
 
   return loading ? (
     <Loading />
@@ -134,6 +139,12 @@ export default function ProductScreen() {
                       >
                         Add to cart
                       </Button>
+                     { ctxState.cart.cartItems.find(x=>x._id===product._id) &&<Button
+                        onClick={() => removeFromCartHandler(product)} className="mt-1"
+                        variant="warning"
+                      >
+                        Remove from cart
+                      </Button>}
                     </div>
                   </ListGroup.Item>
                 )}
