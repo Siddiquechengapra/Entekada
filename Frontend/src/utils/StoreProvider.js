@@ -16,8 +16,6 @@ const reducer = (state, action) => {
           )
         : [...state.cart.cartItems, action.payload];
 
-      console.log("updated cartItems", cartItems);
-
       return {
         ...state,
         cart: {

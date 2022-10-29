@@ -58,7 +58,6 @@ export default function ProductScreen() {
   }, [slug]);
 
   const addToCartHandler = async (product) => {
-    console.log("product", product);
     const existItem = ctxState.cart.cartItems.find(
       (x) => x._id === product._id
     );
