@@ -38,7 +38,7 @@ export default function ProductScreen() {
   const params = useParams();
   const { slug } = params;
   const dataFetcherRef = useRef(false);
-  const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
+  const { state: ctxState, dispatch: ctxDispatch } = useContext(Store);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +58,7 @@ export default function ProductScreen() {
   }, [slug]);
 
   const addToCartHandler = async (product) => {
+    console.log("product", product);
     const existItem = ctxState.cart.cartItems.find(
       (x) => x._id === product._id
     );
@@ -70,14 +71,14 @@ export default function ProductScreen() {
       alert("product out of stock");
       return;
     }
-    ctxDispath({
+    ctxDispatch({
       type: "ADD_TO_CART",
-      payload: { ...product, quantity: quantity },
+      payload: { ...product, quantity },
     });
     navigate("/cart");
   };
   const removeFromCartHandler = async (product) => {
-    ctxDispath({ type: "REMOVE_FROM_CART", payload: { ...product } });
+    ctxDispatch({ type: "REMOVE_FROM_CART", payload: { ...product } });
   };
 
   return loading ? (

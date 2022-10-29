@@ -12,9 +12,12 @@ const reducer = (state, action) => {
 
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item._id === existItem._id ? existItem : item
+            item._id === existItem._id ? newItem : item
           )
         : [...state.cart.cartItems, action.payload];
+
+      console.log("updated cartItems", cartItems);
+
       return {
         ...state,
         cart: {
@@ -24,15 +27,17 @@ const reducer = (state, action) => {
       };
 
     case "REMOVE_FROM_CART":
-      const itemToRemove=action.payload
-      const removedCart=state.cart.cartItems.filter(item=>item._id!== itemToRemove._id)
-      return{
+      const itemToRemove = action.payload;
+      const removedCart = state.cart.cartItems.filter(
+        (item) => item._id !== itemToRemove._id
+      );
+      return {
         ...state,
-        cart:{
+        cart: {
           ...state.cart,
-          cartItems:removedCart
-        }
-      }
+          cartItems: removedCart,
+        },
+      };
 
     default:
       return state;
@@ -42,8 +47,8 @@ const reducer = (state, action) => {
 export const Store = createContext();
 
 export default function StoreProvider(props) {
-  // const [state, dispatch] = useReducer(logger(reducer), initialState);//with logger
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(logger(reducer), initialState); //with logger
+  // const [state, dispatch] = useReducer(reducer, initialState);
 
   const value = { state, dispatch };
   return <Store.Provider value={value}>{props.children}</Store.Provider>;

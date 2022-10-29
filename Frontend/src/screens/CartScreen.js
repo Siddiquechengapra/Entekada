@@ -7,9 +7,25 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
 import Error from "../Components/Error";
+import axios from "axios";
 
 export default function CartScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
+
+  const updateHandler = async (item, quantity) => {
+    const { data } = await axios.get(`/api/products/${item._id}`);
+    if (data.countInStock < quantity) {
+      window.alert("Sorry. Product is out of stock");
+      return;
+    }
+    ctxDispatch({
+      type: "ADD_TO_CART",
+      payload: { ...item, quantity },
+    });
+  };
+  const removeItemHandler = (item) => {
+    ctxDispatch({ type: "REMOVE_FROM_CART", payload: item });
+  };
 
   const {
     cart: { cartItems },
@@ -30,6 +46,7 @@ export default function CartScreen() {
                         <img
                           className="img-fluid img-thumbnail "
                           src={item.image}
+                          alt={item.name}
                         ></img>{" "}
                       </Col>
                       <Col>
@@ -41,20 +58,29 @@ export default function CartScreen() {
                         </Link>
                       </Col>
                       <Col>
-                        <Button variant="light" disabled={item.quantity === 1}>
+                        <Button
+                          variant="light"
+                          disabled={item.quantity === 1}
+                          onClick={() => updateHandler(item, item.quantity - 1)}
+                        >
                           <i className="fas fa-minus-circle"></i>
-                        </Button>{" "}
+                        </Button>
+                        {""}
                         <span>{item.quantity}</span>{" "}
                         <Button
                           variant="light"
                           disabled={item.quantity === item.countInStock}
+                          onClick={() => updateHandler(item, item.quantity + 1)}
                         >
                           <i className="fas fa-plus-circle"></i>
                         </Button>
                       </Col>
                       <Col>${item.price}</Col>
                       <Col>
-                        <Button variant="light">
+                        <Button
+                          onClick={() => removeItemHandler(item)}
+                          variant="light"
+                        >
                           <i className="fas fa-trash"></i>
                         </Button>
                       </Col>

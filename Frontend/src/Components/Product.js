@@ -18,7 +18,9 @@ export default function Product(props) {
           </Link>
           <Rating numReviews={product.numReviews} rating={product.rating} />
           <Card.Text>${product.price}</Card.Text>
-          <Button>Add to cart</Button>
+          <div className='d-grid'>
+            <Button>Add to cart</Button>
+          </div>
         </div>
       </Card.Body>
     </Card>
