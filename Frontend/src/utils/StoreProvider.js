@@ -2,7 +2,11 @@ import React, { createContext, useReducer } from "react";
 import logger from "use-reducer-logger";
 
 const initialState = {
-  cart: { cartItems: [] },
+  cart: {
+    cartItems: localStorage.getItem("cartItems")
+      ? JSON.parse(localStorage.getItem("cartItems"))
+      : [],
+  },
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -15,6 +19,8 @@ const reducer = (state, action) => {
             item._id === existItem._id ? newItem : item
           )
         : [...state.cart.cartItems, action.payload];
+
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
       return {
         ...state,
@@ -29,6 +35,8 @@ const reducer = (state, action) => {
       const removedCart = state.cart.cartItems.filter(
         (item) => item._id !== itemToRemove._id
       );
+      localStorage.setItem("cartItems", JSON.stringify(removedCart));
+
       return {
         ...state,
         cart: {

@@ -5,18 +5,19 @@ import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Error from "../Components/Error";
 import axios from "axios";
 
 export default function CartScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  const navigate = useNavigate();
 
   const updateHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock < quantity) {
       window.alert("Sorry. Product is out of stock");
-      return;
+      return; 
     }
     ctxDispatch({
       type: "ADD_TO_CART",
@@ -27,6 +28,10 @@ export default function CartScreen() {
     ctxDispatch({ type: "REMOVE_FROM_CART", payload: item });
   };
 
+  const checkoutHandler = () => {
+    navigate("/signin?redirect=/shipping");
+  };
+
   const {
     cart: { cartItems },
   } = state;
@@ -35,7 +40,9 @@ export default function CartScreen() {
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
-            <Error variant="danger" message="cart is empty"></Error>
+            <Error variant="danger" message="cart is empty">
+              <Link to="/">Go shopping</Link>{" "}
+            </Error>
           ) : (
             <Col>
               <ListGroup>
@@ -108,6 +115,7 @@ export default function CartScreen() {
                     <Button
                       type="button"
                       variant="primary"
+                      onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
                     >
                       Proceed to checkout
