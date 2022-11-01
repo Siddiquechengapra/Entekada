@@ -51,7 +51,7 @@ export default function HomeScreen() {
         <title>Home</title>
       </Helmet>
       <h4 className="font-weight-bold">FEATURED PRODUCTS</h4>
-      <div className="products">
+      <div className="products ">
         {loading ? (
           <Loading />
         ) : error ? (

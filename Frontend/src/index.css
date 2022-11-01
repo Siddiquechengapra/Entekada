@@ -39,7 +39,7 @@ header a {
 .prodinfo {
   padding: 1rem;
 }
-span {
+i{
   color: blue;
 }
 .img-large {
@@ -47,4 +47,10 @@ span {
 }
 .img-thumbnail {
   height: 80px;
+}
+.signin{
+  display:flex;
+  flex-direction:column; 
+  align-items:center;
+  gap:20px;
 }

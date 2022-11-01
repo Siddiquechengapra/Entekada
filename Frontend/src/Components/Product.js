@@ -13,7 +13,6 @@ export default function Product(props) {
   } = state;
 
   const addToCartHandler = async (product) => {
-    const newitem = product;
     const existItem = cartItems.find((item) => item.__id === product._id);
     const quantity = existItem ? existItem.quantity : 1;
 
@@ -39,9 +38,15 @@ export default function Product(props) {
           <Rating numReviews={product.numReviews} rating={product.rating} />
           <Card.Text>${product.price}</Card.Text>
           <div className="d-grid">
-            <Button onClick={() => addToCartHandler(product)}>
-              Add to cart
-            </Button>
+            {product.countInStock === 0 ? (
+              <Button varinat="light" disabled>
+                Out of stock
+              </Button>
+            ) : (
+              <Button onClick={() => addToCartHandler(product)}>
+                Add to cart
+              </Button>
+            )}
           </div>
         </div>
       </Card.Body>
