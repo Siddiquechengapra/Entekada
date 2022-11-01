@@ -1,7 +1,15 @@
 import express from "express";
 import data from "./data.js";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 
 const app = express();
+dotenv.config();
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Database connected"))
+  .catch((err) => console.log(`error is ${err}`));
+
 app.get("/api/products", (req, res) => {
   res.send(data.products);
 });
@@ -11,7 +19,7 @@ app.get("/api/slug/:slug", (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: "Product not found "});
+    res.status(404).send({ message: "Product not found " });
   }
 });
 app.get("/api/products/:id", (req, res) => {
@@ -19,7 +27,7 @@ app.get("/api/products/:id", (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: "Product not found"});
+    res.status(404).send({ message: "Product not found" });
   }
 });
 const port = process.env.PORT || 5000;
