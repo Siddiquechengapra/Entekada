@@ -22,7 +22,7 @@ export default function Signin() {
           <Form.Control type="email" required />
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" required />
-          <Button type="submit">Sign in</Button>
+          <Button className="mt-3" type="submit">Sign in</Button>
           <div className="mb-3">
             New customer ? {""}{" "}
             <Link to={`/signup?redirect=${redirect}`}>create your account</Link>
