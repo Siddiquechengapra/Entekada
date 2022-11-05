@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import seederRoute from "./Routes/SeederRoutes.js";
 import productRouter from "./Routes/productRoutes.js";
 import slugRouter from "./Routes/SlugRoutes.js";
+import userRoutes from "./Routes/UserRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ mongoose
 app.use("/api/seed", seederRoute);
 app.use("/api/products", productRouter);
 app.use("/api/slug", slugRouter);
+app.use("/api/user", userRoutes);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
