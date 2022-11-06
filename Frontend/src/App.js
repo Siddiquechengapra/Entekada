@@ -10,10 +10,12 @@ import { useContext } from "react";
 import { Store } from "./utils/StoreProvider";
 import Badge from "react-bootstrap/Badge";
 import CartScreen from "./screens/CartScreen";
-import Signin from './screens/Signin';
+import Signin from "./screens/Signin";
 
 function App() {
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
+
+  const { userInfo } = ctxState;
 
   return (
     <BrowserRouter>
@@ -36,6 +38,7 @@ function App() {
                         )}
                   </Badge>
                 </Nav.Link>
+                {userInfo && <Nav.Link>{userInfo.name}</Nav.Link>}
               </Nav>
             </Container>
           </Navbar>
@@ -47,7 +50,6 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/" element={<HomeScreen />} />
               <Route path="/signin" element={<Signin />} />
-
             </Routes>
           </Container>
         </main>

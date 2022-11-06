@@ -7,6 +7,9 @@ const initialState = {
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
   },
+  userInfo: localStorage.getItem("userInfo")
+    ? JSON.parse(localStorage.getItem("userInfo"))
+    : null,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,6 +46,22 @@ const reducer = (state, action) => {
           ...state.cart,
           cartItems: removedCart,
         },
+      };
+
+    case "USER_SIGNIN":
+      localStorage.setItem("userInfo", JSON.stringify(action.payload));
+
+      return {
+        ...state,
+        userInfo: action.payload,
+      };
+
+    case "USER_SIGNOUT":
+      localStorage.removeItem("userInfo");
+
+      return {
+        ...state,
+        userInfo: null,
       };
 
     default:
