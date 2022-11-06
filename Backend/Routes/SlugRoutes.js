@@ -15,8 +15,8 @@ slugRouter.get("/", async (req, res) => {
   }
 });
 
-slugRouter.get("/:slug", (req, res) => {
-  const product = Product.find({ slug: req.params.slug });
+slugRouter.get("/:slug", async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug });
   if (product) {
     res.send(product);
   } else {
