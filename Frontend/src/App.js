@@ -5,6 +5,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
+import NavDropDown from "react-bootstrap/NavDropDown";
 import { LinkContainer } from "react-router-bootstrap";
 import { useContext } from "react";
 import { Store } from "./utils/StoreProvider";
@@ -38,7 +39,14 @@ function App() {
                         )}
                   </Badge>
                 </Nav.Link>
-                {userInfo && <Nav.Link>{userInfo.name}</Nav.Link>}
+                {userInfo ?(<NavDropDown title={`${userInfo.name.charAt(0).toUpperCase()+userInfo.name.substring(1)}`} id="basic-nav-dropdown">
+                <LinkContainer to="/profile">
+                <NavDropDown.Item>User Profile</NavDropDown.Item>
+              </LinkContainer>
+              <LinkContainer to="/orderhistory">
+                <NavDropDown.Item>Order History</NavDropDown.Item>
+              </LinkContainer>
+                </NavDropDown>): (<Nav.Link href="/signin">Sign in </Nav.Link>) }
               </Nav>
             </Container>
           </Navbar>

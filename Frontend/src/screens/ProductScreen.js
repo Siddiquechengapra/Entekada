@@ -132,24 +132,28 @@ export default function ProductScreen() {
 
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
+                    {/* dgrid is for stretching the add to cart button  */}
                     <div className="d-grid">
-                      <Button
+                      {!ctxState.cart.cartItems.find(
+                        (x) => x._id === product._id
+                      ) && <Button
                         onClick={() => addToCartHandler(product)}
                         variant="primary"
                       >
-                        Add to cart
-                      </Button>
+                          Add to cart
+                        </Button>}
+
                       {ctxState.cart.cartItems.find(
                         (x) => x._id === product._id
                       ) && (
-                        <Button
-                          onClick={() => removeFromCartHandler(product)}
-                          className="mt-1"
-                          variant="warning"
-                        >
-                          Remove from cart
-                        </Button>
-                      )}
+                          <Button
+                            onClick={() => removeFromCartHandler(product)}
+                            className="mt-1"
+                            variant="warning"
+                          >
+                            Remove from cart
+                          </Button>
+                        )}
                     </div>
                   </ListGroup.Item>
                 )}
