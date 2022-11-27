@@ -25,7 +25,7 @@ userRoutes.get("/", async (req, res) => {
 // });
 userRoutes.post(
   "/signin",
-  expressAsyncHandler(async (req, res) => {
+  expressAsyncHandler(async (req, res) => { 
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -37,8 +37,11 @@ userRoutes.post(
           token: generateToken(user),
         });
         return;
+      }else {
+        res.status(404).send({ message: "Wrong password" });
       }
-    } else {
+    }
+     else {
       res.status(404).send({ message: "credentials wrong" });
     }
   })
