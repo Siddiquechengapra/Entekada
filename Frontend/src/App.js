@@ -37,9 +37,9 @@ function App() {
                 <Nav.Link href="/cart">
                   Cart
                   <Badge pill bg="danger">
-                    {ctxState.cart.cartItems.length === 0
-                      ? "Empty"
-                      : ctxState.cart.cartItems.reduce(
+                    {ctxState?.cart?.cartItems?.length === 0
+                      ? ""
+                      : ctxState?.cart?.cartItems.reduce(
                         (a, c) => a + c.quantity,
                         0
                       )}

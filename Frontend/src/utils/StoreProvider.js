@@ -61,11 +61,14 @@ const reducer = (state, action) => {
 
     case "USER_SIGNOUT":
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("cartItems");
+
       toast.warning(`Signed out`)
 
       return {
         ...state,
         userInfo: null,
+        cart:[]
       };
 
     default:
