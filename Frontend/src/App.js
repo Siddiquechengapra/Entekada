@@ -12,15 +12,21 @@ import { Store } from "./utils/StoreProvider";
 import Badge from "react-bootstrap/Badge";
 import CartScreen from "./screens/CartScreen";
 import Signin from "./screens/Signin";
+import {ToastContainer} from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
 
   const { userInfo } = ctxState;
+  const signoutHandler=()=>{
+    ctxDispath({type:"USER_SIGNOUT"})
+  }
 
   return (
     <BrowserRouter>
       <div className=" d-flex flex-column site-container">
+        <ToastContainer position={"bottom-center"} limit={1}/>
         <header>
           <Navbar bg="dark" variant="dark">
             <Container>
@@ -34,19 +40,21 @@ function App() {
                     {ctxState.cart.cartItems.length === 0
                       ? "Empty"
                       : ctxState.cart.cartItems.reduce(
-                          (a, c) => a + c.quantity,
-                          0
-                        )}
+                        (a, c) => a + c.quantity,
+                        0
+                      )}
                   </Badge>
                 </Nav.Link>
-                {userInfo ?(<NavDropDown title={`${userInfo.name.charAt(0).toUpperCase()+userInfo.name.substring(1)}`} id="basic-nav-dropdown">
-                <LinkContainer to="/profile">
-                <NavDropDown.Item>User Profile</NavDropDown.Item>
-              </LinkContainer>
-              <LinkContainer to="/orderhistory">
-                <NavDropDown.Item>Order History</NavDropDown.Item>
-              </LinkContainer>
-                </NavDropDown>): (<Nav.Link href="/signin">Sign in </Nav.Link>) }
+                {userInfo ? (<NavDropDown title={`${userInfo.name.charAt(0).toUpperCase() + userInfo.name.substring(1)}`} id="basic-nav-dropdown">
+                  <LinkContainer to="/profile">
+                    <NavDropDown.Item>User Profile</NavDropDown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/orderhistory">
+                    <NavDropDown.Item>Order History</NavDropDown.Item>
+                  </LinkContainer>
+                  <NavDropDown.Divider/>
+                <Link className="dropdown-item" to="#signout" onClick={signoutHandler}>SignOut</Link>
+                </NavDropDown>) : (<Nav.Link href="/signin">Sign in </Nav.Link>)}
               </Nav>
             </Container>
           </Navbar>

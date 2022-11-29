@@ -5,12 +5,17 @@ import Form from "react-bootstrap/Form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Store } from "../utils/StoreProvider";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../utils/Utils";
+
+
 
 export default function Signin() {
   const { search } = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { state: ctxstate, dispatch: ctxDispatch } = useContext(Store);
+  const {userInfo} =ctxstate
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
@@ -20,15 +25,22 @@ export default function Signin() {
         email,
         password,
       });
-      ctxDispatch({ type: "USER_SIGNIN", payload: data });
+      ctxDispatch({ type: "USER_SIGNIN",payload:data});
       navigate("/");
     } catch (err) {
-      console.log("Error in Signin ", err);
+      toast.error(getError(err));
     }
   };
 
+
   const redirectInUrl = new URLSearchParams(search).get("redirect");
   const redirect = redirectInUrl ? redirectInUrl : "/";
+
+  useEffect(()=>{
+    if(userInfo){
+        navigate(redirect)
+    }
+  },[userInfo,navigate,redirect])
 
   return (
     <div className="signin">

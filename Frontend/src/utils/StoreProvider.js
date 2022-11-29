@@ -1,5 +1,7 @@
 import React, { createContext, useReducer } from "react";
 import logger from "use-reducer-logger";
+import { toast } from "react-toastify";
+
 
 const initialState = {
   cart: {
@@ -50,6 +52,7 @@ const reducer = (state, action) => {
 
     case "USER_SIGNIN":
       localStorage.setItem("userInfo", JSON.stringify(action.payload));
+      toast.success(`Welcome ${action.payload.name.charAt(0).toUpperCase()}${action.payload.name.slice(1)}`)
 
       return {
         ...state,
@@ -58,6 +61,7 @@ const reducer = (state, action) => {
 
     case "USER_SIGNOUT":
       localStorage.removeItem("userInfo");
+      toast.warning(`Signed out`)
 
       return {
         ...state,
