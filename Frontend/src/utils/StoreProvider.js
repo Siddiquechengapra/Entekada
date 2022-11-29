@@ -8,6 +8,9 @@ const initialState = {
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
+    shippingAddress: localStorage.getItem("shippingAddress")
+      ? JSON.parse(localStorage.getItem("shippingAddress"))
+      : {},
   },
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
@@ -21,8 +24,8 @@ const reducer = (state, action) => {
 
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item._id === existItem._id ? newItem : item
-          )
+          item._id === existItem._id ? newItem : item
+        )
         : [...state.cart.cartItems, action.payload];
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -60,16 +63,26 @@ const reducer = (state, action) => {
       };
 
     case "USER_SIGNOUT":
-      localStorage.removeItem("userInfo");
-      localStorage.removeItem("cartItems");
-
       toast.warning(`Signed out`)
 
       return {
         ...state,
         userInfo: null,
-        cart:[]
+        cart: {
+          ...state.cart,
+          cartItems:[],
+          shippingAddress:{}
+        }
       };
+
+    case "SAVE_SHIPPING_ADDRESS":
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: action.payload
+        }
+      }
 
     default:
       return state;

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link,useNavigate } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Navbar from "react-bootstrap/Navbar";
@@ -14,13 +14,17 @@ import CartScreen from "./screens/CartScreen";
 import Signin from "./screens/Signin";
 import {ToastContainer} from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import ShippingAddress from "./screens/ShippingAddress";
+import PaymentScreen from "./screens/PaymentScreen";
 
 function App() {
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
-
   const { userInfo } = ctxState;
   const signoutHandler=()=>{
-    ctxDispath({type:"USER_SIGNOUT"})
+    ctxDispath({type:"USER_SIGNOUT"})  
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("cartItems");   
+    localStorage.removeItem("shippingItems");     
   }
 
   return (
@@ -39,7 +43,7 @@ function App() {
                   <Badge pill bg="danger">
                     {ctxState?.cart?.cartItems?.length === 0
                       ? ""
-                      : ctxState?.cart?.cartItems.reduce(
+                      : ctxState?.cart?.cartItems?.reduce(
                         (a, c) => a + c.quantity,
                         0
                       )}
@@ -53,7 +57,7 @@ function App() {
                     <NavDropDown.Item>Order History</NavDropDown.Item>
                   </LinkContainer>
                   <NavDropDown.Divider/>
-                <Link className="dropdown-item" to="#signout" onClick={signoutHandler}>SignOut</Link>
+                <Link className="dropdown-item" onClick={signoutHandler}>SignOut</Link>
                 </NavDropDown>) : (<Nav.Link href="/signin">Sign in </Nav.Link>)}
               </Nav>
             </Container>
@@ -66,6 +70,8 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/" element={<HomeScreen />} />
               <Route path="/signin" element={<Signin />} />
+              <Route path="/shipping" element={<ShippingAddress />} />
+              <Route path="/payment" element={<PaymentScreen />} />
             </Routes>
           </Container>
         </main>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useReducer } from "react";
+import React, { useEffect, useState, useRef, useReducer, useContext } from "react";
 import axios from "axios";
 import logger from "use-reducer-logger";
 import Row from "react-bootstrap/Row";
@@ -7,6 +7,8 @@ import Product from "../Components/Product";
 import { Helmet } from "react-helmet-async";
 import Loading from "../Components/Loading";
 import Error from "../Components/Error";
+import { Store } from "../utils/StoreProvider";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -26,9 +28,15 @@ export default function HomeScreen() {
     products: [],
     error: "",
   });
+  const { state: ctxstate, dispatch: ctxDispatch } = useContext(Store);
+  const{userInfo}=ctxstate
+  const navigate = useNavigate();
   // const [products, setProducts] = useState([]);
   const dataFetchedRef = useRef(false);
   useEffect(() => {
+    if(!userInfo){
+      navigate("/signin")
+    }
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {

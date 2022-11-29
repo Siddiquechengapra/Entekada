@@ -17,6 +17,8 @@ export default function Signin() {
   const { state: ctxstate, dispatch: ctxDispatch } = useContext(Store);
   const {userInfo} =ctxstate
   const navigate = useNavigate();
+  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirect = redirectInUrl ? redirectInUrl : "/";
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -26,15 +28,13 @@ export default function Signin() {
         password,
       });
       ctxDispatch({ type: "USER_SIGNIN",payload:data});
-      navigate("/");
+      navigate(redirect);
     } catch (err) {
       toast.error(getError(err));
     }
   };
 
 
-  const redirectInUrl = new URLSearchParams(search).get("redirect");
-  const redirect = redirectInUrl ? redirectInUrl : "/";
 
   useEffect(()=>{
     if(userInfo){
