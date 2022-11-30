@@ -18,9 +18,7 @@ export default function PaymentScreen() {
     e.preventDefault();
     ctxDispatch({type:"SAVE_PAYMENT_METHOD",payload:paymentMethodSt})
     localStorage.setItem("paymentMethod",JSON.stringify(paymentMethodSt))
-
     navigate("/placeorder")
-
   }
 
   useEffect(() => {
