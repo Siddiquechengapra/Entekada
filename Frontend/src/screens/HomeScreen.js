@@ -52,7 +52,7 @@ export default function HomeScreen() {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
     fetchData();
-  }, []);
+  }, [userInfo,navigate]);
   return (
     <div>
       <Helmet>

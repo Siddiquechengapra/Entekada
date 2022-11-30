@@ -25,7 +25,7 @@ userRoutes.get("/", async (req, res) => {
 // });
 userRoutes.post(
   "/signin",
-  expressAsyncHandler(async (req, res) => { 
+  expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -41,10 +41,28 @@ userRoutes.post(
         res.status(404).send({ message: "Wrong password" });
       }
     }
-     else {
+    else {
       res.status(404).send({ message: "credentials wrong" });
     }
   })
 );
 
+userRoutes.post(
+  "/signup",
+  expressAsyncHandler(async (req, res) => {
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password)
+    })
+    const user = await newUser.save()
+    res.send({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.admin,
+      token: generateToken(user),
+    });
+  })
+);
 export default userRoutes;
