@@ -25,7 +25,8 @@ function App() {
     ctxDispath({type:"USER_SIGNOUT"})  
     localStorage.removeItem("userInfo");
     localStorage.removeItem("cartItems");   
-    localStorage.removeItem("shippingAddress");     
+    localStorage.removeItem("shippingAddress");   
+    localStorage.removeItem("paymentMethod");     
   }
 
   return (
