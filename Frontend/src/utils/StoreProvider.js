@@ -2,7 +2,6 @@ import React, { createContext, useReducer } from "react";
 import logger from "use-reducer-logger";
 import { toast } from "react-toastify";
 
-
 const initialState = {
   cart: {
     cartItems: localStorage.getItem("cartItems")
@@ -11,11 +10,9 @@ const initialState = {
     shippingAddress: localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
       : {},
-    paymentMethod:
-      localStorage.getItem("paymentMethod")
-        ? JSON.parse(localStorage.getItem("paymentMethod"))
-        : null,
-
+    paymentMethod: localStorage.getItem("paymentMethod")
+      ? JSON.parse(localStorage.getItem("paymentMethod"))
+      : null,
   },
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
@@ -29,8 +26,8 @@ const reducer = (state, action) => {
 
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-          item._id === existItem._id ? newItem : item
-        )
+            item._id === existItem._id ? newItem : item
+          )
         : [...state.cart.cartItems, action.payload];
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -58,9 +55,16 @@ const reducer = (state, action) => {
         },
       };
 
+    case "CART_CLEAR":
+      return { ...state, cart: { ...state.cart, cartItems: [] } };
+
     case "USER_SIGNIN":
       localStorage.setItem("userInfo", JSON.stringify(action.payload));
-      toast.success(`Welcome ${action.payload.name.charAt(0).toUpperCase()}${action.payload.name.slice(1)}`)
+      toast.success(
+        `Welcome ${action.payload.name
+          .charAt(0)
+          .toUpperCase()}${action.payload.name.slice(1)}`
+      );
 
       return {
         ...state,
@@ -68,7 +72,7 @@ const reducer = (state, action) => {
       };
 
     case "USER_SIGNOUT":
-      toast.warning(`Signed out`)
+      toast.warning(`Signed out`);
 
       return {
         ...state,
@@ -76,8 +80,8 @@ const reducer = (state, action) => {
         cart: {
           ...state.cart,
           cartItems: [],
-          shippingAddress: {}
-        }
+          shippingAddress: {},
+        },
       };
 
     case "SAVE_SHIPPING_ADDRESS":
@@ -85,19 +89,18 @@ const reducer = (state, action) => {
         ...state,
         cart: {
           ...state.cart,
-          shippingAddress: action.payload
-        }
-      }
+          shippingAddress: action.payload,
+        },
+      };
 
     case "SAVE_PAYMENT_METHOD":
-
       return {
         ...state,
         cart: {
           ...state.cart,
-          paymentMethod: action.payload
-        }
-      }
+          paymentMethod: action.payload,
+        },
+      };
 
     default:
       return state;

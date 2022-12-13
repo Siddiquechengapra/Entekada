@@ -6,6 +6,7 @@ import seederRoute from "./Routes/SeederRoutes.js";
 import productRouter from "./Routes/productRoutes.js";
 import slugRouter from "./Routes/SlugRoutes.js";
 import userRoutes from "./Routes/UserRoutes.js";
+import orderRoutes from "./Routes/OrderRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -22,6 +23,7 @@ app.use("/api/seed", seederRoute);
 app.use("/api/products", productRouter);
 app.use("/api/slug", slugRouter);
 app.use("/api/user", userRoutes);
+app.use("/api/order", orderRoutes);
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
