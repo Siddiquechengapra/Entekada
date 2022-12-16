@@ -1,4 +1,5 @@
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
+import User from "./models/UserModel.js";
 
 export const generateToken = (user) => {
   const token = jwt.sign(
@@ -13,13 +14,20 @@ export const isAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (authorization) {
     const token = authorization.split(" ")[1];
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
       if (err) {
         res.status(401).send({ message: "invaid token" });
       } else {
-        req.user = decoded;
-        console.log("decoded ", decoded);
-        next();
+        if (decoded && !decoded._id) {
+          console.log("no id ");
+          const userData = await User.findOne({ email: decoded.email });
+          req.user = userData;
+          next();
+        } else {
+          console.log("Id coming");
+          req.user = decoded;
+          next();
+        }
       }
     });
   } else {

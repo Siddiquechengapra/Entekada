@@ -17,10 +17,18 @@ orderRoutes.post(
       shippingPrice: req.body.shippingPrice,
       taxPrice: req.body.taxPrice,
       totalPrice: req.body.totalPrice,
-      user: req.user._id
+      user: req.user._id,
     });
     const order = await newOrder.save();
     res.status(201).send({ message: "New order created ", order });
   })
 );
+orderRoutes.get("/:id", async (req, res) => {
+  const orderData = await Order.findById(req.params.id);
+  res.send(orderData);
+});
+orderRoutes.get("/", async (req, res) => {
+  const orderData = await Order.find();
+  res.send(orderData);
+});
 export default orderRoutes;

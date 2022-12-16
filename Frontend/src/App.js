@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Link,useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from "./screens/ProductScreen";
 import Navbar from "react-bootstrap/Navbar";
@@ -12,28 +18,30 @@ import { Store } from "./utils/StoreProvider";
 import Badge from "react-bootstrap/Badge";
 import CartScreen from "./screens/CartScreen";
 import Signin from "./screens/Signin";
-import {ToastContainer} from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ShippingAddress from "./screens/ShippingAddress";
 import PaymentScreen from "./screens/PaymentScreen";
 import SignUp from "./screens/SignUp";
 import PlaceOrder from "./screens/PlaceOrder";
+import OrderScreen from "./screens/OrderScreen";
+import AllOrdersList from "./screens/AllOrdersList";
 
 function App() {
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
   const { userInfo } = ctxState;
-  const signoutHandler=()=>{
-    ctxDispath({type:"USER_SIGNOUT"})  
+  const signoutHandler = () => {
+    ctxDispath({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
-    localStorage.removeItem("cartItems");   
-    localStorage.removeItem("shippingAddress");   
-    localStorage.removeItem("paymentMethod");     
-  }
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+  };
 
   return (
     <BrowserRouter>
       <div className=" d-flex flex-column site-container">
-        <ToastContainer position={"bottom-center"} limit={1}/>
+        <ToastContainer position={"bottom-center"} limit={1} />
         <header>
           <Navbar bg="dark" variant="dark">
             <Container>
@@ -47,21 +55,33 @@ function App() {
                     {ctxState?.cart?.cartItems?.length === 0
                       ? ""
                       : ctxState?.cart?.cartItems?.reduce(
-                        (a, c) => a + c.quantity,
-                        0
-                      )}
+                          (a, c) => a + c.quantity,
+                          0
+                        )}
                   </Badge>
                 </Nav.Link>
-                {userInfo ? (<NavDropDown title={`${userInfo.name.charAt(0).toUpperCase() + userInfo.name.substring(1)}`} id="basic-nav-dropdown">
-                  <LinkContainer to="/profile">
-                    <NavDropDown.Item>User Profile</NavDropDown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/orderhistory">
-                    <NavDropDown.Item>Order History</NavDropDown.Item>
-                  </LinkContainer>
-                  <NavDropDown.Divider/>
-                <Link className="dropdown-item" onClick={signoutHandler}>SignOut</Link>
-                </NavDropDown>) : (<Nav.Link href="/signin">Sign in </Nav.Link>)}
+                {userInfo ? (
+                  <NavDropDown
+                    title={`${
+                      userInfo.name.charAt(0).toUpperCase() +
+                      userInfo.name.substring(1)
+                    }`}
+                    id="basic-nav-dropdown"
+                  >
+                    <LinkContainer to="/profile">
+                      <NavDropDown.Item>User Profile</NavDropDown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/orderhistory">
+                      <NavDropDown.Item>Order History</NavDropDown.Item>
+                    </LinkContainer>
+                    <NavDropDown.Divider />
+                    <Link className="dropdown-item" onClick={signoutHandler}>
+                      SignOut
+                    </Link>
+                  </NavDropDown>
+                ) : (
+                  <Nav.Link href="/signin">Sign in </Nav.Link>
+                )}
               </Nav>
             </Container>
           </Navbar>
@@ -77,6 +97,8 @@ function App() {
               <Route path="/shipping" element={<ShippingAddress />} />
               <Route path="/payment" element={<PaymentScreen />} />
               <Route path="/placeorder" element={<PlaceOrder />} />
+              <Route path="/order/:id" element={<OrderScreen />} />
+              <Route path="/orders" element={<AllOrdersList />} />
             </Routes>
           </Container>
         </main>
