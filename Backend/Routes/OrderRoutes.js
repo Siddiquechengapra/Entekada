@@ -25,7 +25,11 @@ orderRoutes.post(
 );
 orderRoutes.get("/:id", async (req, res) => {
   const orderData = await Order.findById(req.params.id);
-  res.send(orderData);
+  if (orderData) {
+    res.send(orderData);
+  } else {
+    res.status(404).send({ message: "Order Not Found" });
+  }
 });
 orderRoutes.get("/", async (req, res) => {
   const orderData = await Order.find();
