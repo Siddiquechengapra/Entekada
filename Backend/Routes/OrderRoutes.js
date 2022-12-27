@@ -23,7 +23,7 @@ orderRoutes.post(
     res.status(201).send({ message: "New order created ", order });
   })
 );
-orderRoutes.get("/:id", async (req, res) => {
+orderRoutes.get("/:id",isAuth, async (req, res) => {
   const orderData = await Order.findById(req.params.id);
   if (orderData) {
     res.send(orderData);

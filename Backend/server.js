@@ -19,6 +19,9 @@ mongoose
 app.use(express.json()); //MUST WHEN USING POST
 app.use(express.urlencoded({ extended: true })); //MUST WHEN USING POST
 
+app.use("/api/keys/paypal",(req,res)=>{
+  res.send(process.env.PAYPAL_CLIENT_ID || 'sb')
+})
 app.use("/api/seed", seederRoute);
 app.use("/api/products", productRouter);
 app.use("/api/slug", slugRouter);
