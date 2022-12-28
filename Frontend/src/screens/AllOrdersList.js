@@ -7,6 +7,7 @@ import Container from "react-bootstrap/esm/Container";
 import { Link } from "react-router-dom";
 import { Store } from "../utils/StoreProvider";
 import { getError } from "../utils/Utils";
+import Error from "../Components/Error";
 
 export default function AllOrdersList() {
   const { state: ctxState, dispatch: ctxDispatch } = useContext(Store);
@@ -44,7 +45,11 @@ export default function AllOrdersList() {
     const fetchOrders = async () => {
       try {
         dispatch({ type: "ORDERLIST_REQUEST" });
-        const { data } = await axios.get("/api/orders");
+        const { data } = await axios.get("/api/orders", {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`
+          }
+        });
         dispatch({ type: "ORDERLIST_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "ORDERLIST_FAIL", payload: getError(err) });
@@ -59,11 +64,15 @@ export default function AllOrdersList() {
           All Orders for {userInfo.name.charAt(0).toUpperCase()}
           {userInfo.name.slice(1)}
         </h1>
-        {orderList &&
+        {error && <Error variant={"danger"}>{error}</Error>}
+        {!error && orderList &&
           orderList.map((item) => (
             <ListGroup key={item._id} variant="flush">
               <ListGroup.Item>
                 <Row>
+                  <Col md={2}>
+                    {item.createdAt.split("T")[0]}
+                  </Col>
                   <Col md={4}>
                     <Link style={{ textDecoration: "none" }} to={`/order/${item._id}`}>
                       {item._id}

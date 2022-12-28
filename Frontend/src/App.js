@@ -43,46 +43,48 @@ function App() {
       <div className=" d-flex flex-column site-container">
         <ToastContainer position={"bottom-center"} limit={1} />
         <header>
-          <Navbar bg="dark" variant="dark">
+          <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
               <LinkContainer to="/">
                 <Navbar.Brand>Entekada</Navbar.Brand>
               </LinkContainer>
-              <Nav className="me-auto">
-                <Nav.Link href="/cart">
-                  Cart
-                  <Badge pill bg="danger">
-                    {ctxState?.cart?.cartItems?.length === 0
-                      ? ""
-                      : ctxState?.cart?.cartItems?.reduce(
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav" >
+                <Nav className="me-auto w-100 justify-content-end">
+                  <Nav.Link href="/cart">
+                    Cart
+                    <Badge pill bg="danger">
+                      {ctxState?.cart?.cartItems?.length === 0
+                        ? ""
+                        : ctxState?.cart?.cartItems?.reduce(
                           (a, c) => a + c.quantity,
                           0
                         )}
-                  </Badge>
-                </Nav.Link>
-                {userInfo ? (
-                  <NavDropDown
-                    title={`${
-                      userInfo.name.charAt(0).toUpperCase() +
-                      userInfo.name.substring(1)
-                    }`}
-                    id="basic-nav-dropdown"
-                  >
-                    <LinkContainer to="/profile">
-                      <NavDropDown.Item>User Profile</NavDropDown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/orderhistory">
-                      <NavDropDown.Item>Order History</NavDropDown.Item>
-                    </LinkContainer>
-                    <NavDropDown.Divider />
-                    <Link className="dropdown-item" onClick={signoutHandler}>
-                      SignOut
-                    </Link>
-                  </NavDropDown>
-                ) : (
-                  <Nav.Link href="/signin">Sign in </Nav.Link>
-                )}
-              </Nav>
+                    </Badge>
+                  </Nav.Link>
+                  {userInfo ? (
+                    <NavDropDown
+                      title={`${userInfo.name.charAt(0).toUpperCase() +
+                        userInfo.name.substring(1)
+                        }`}
+                      id="basic-nav-dropdown"
+                    >
+                      <LinkContainer to="/profile">
+                        <NavDropDown.Item>User Profile</NavDropDown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/orders">
+                        <NavDropDown.Item>Order History</NavDropDown.Item>
+                      </LinkContainer>
+                      <NavDropDown.Divider />
+                      <Link className="dropdown-item" onClick={signoutHandler}>
+                        SignOut
+                      </Link>
+                    </NavDropDown>
+                  ) : (
+                    <Nav.Link href="/signin">Sign in </Nav.Link>
+                  )}
+                </Nav>
+              </Navbar.Collapse>
             </Container>
           </Navbar>
         </header>
@@ -106,7 +108,7 @@ function App() {
           <div className="text-center">All rights reserved </div>
         </footer>
       </div>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

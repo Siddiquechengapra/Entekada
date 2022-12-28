@@ -5,8 +5,8 @@ import { generateToken, isAuth } from "../Utils.js";
 
 const allOrderRoutes = express.Router();
 
-allOrderRoutes.get("/", async (req, res) => {
-  const orderData = await Order.find({});
+allOrderRoutes.get("/", isAuth, async (req, res) => {
+  const orderData = await Order.find({ user: req.user._id });
   res.send(orderData);
 });
 
