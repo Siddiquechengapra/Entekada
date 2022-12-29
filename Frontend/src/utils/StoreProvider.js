@@ -26,8 +26,8 @@ const reducer = (state, action) => {
 
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item._id === existItem._id ? newItem : item
-          )
+          item._id === existItem._id ? newItem : item
+        )
         : [...state.cart.cartItems, action.payload];
 
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
@@ -65,11 +65,19 @@ const reducer = (state, action) => {
           .charAt(0)
           .toUpperCase()}${action.payload.name.slice(1)}`
       );
-
       return {
         ...state,
         userInfo: action.payload,
       };
+
+    case "USER_EDIT":
+      const userinfoFromLocalStorage = JSON.parse(localStorage.getItem("userInfo"))
+      const editedUser = { ...userinfoFromLocalStorage, name: action.payload.name, email: action.payload.email }
+      localStorage.setItem("userInfo", JSON.stringify(editedUser));
+      return {
+        ...state,
+        userInfo: { ...state.userInfo, ...editedUser }
+      }
 
     case "USER_SIGNOUT":
       toast.warning(`Signed out`);

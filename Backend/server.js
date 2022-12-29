@@ -8,6 +8,7 @@ import slugRouter from "./Routes/SlugRoutes.js";
 import userRoutes from "./Routes/UserRoutes.js";
 import orderRoutes from "./Routes/OrderRoutes.js";
 import allOrderRoutes from "./Routes/allOrderRoutes.js";
+import profileEditRoutes from "./Routes/profileEditRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/api/slug", slugRouter);
 app.use("/api/user", userRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/orders", allOrderRoutes);
+app.use("/api/profileedit", profileEditRoutes);
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });

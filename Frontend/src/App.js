@@ -26,6 +26,7 @@ import SignUp from "./screens/SignUp";
 import PlaceOrder from "./screens/PlaceOrder";
 import OrderScreen from "./screens/OrderScreen";
 import AllOrdersList from "./screens/AllOrdersList";
+import Profile from "./screens/Profile";
 
 function App() {
   const { state: ctxState, dispatch: ctxDispath } = useContext(Store);
@@ -101,6 +102,8 @@ function App() {
               <Route path="/placeorder" element={<PlaceOrder />} />
               <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/orders" element={<AllOrdersList />} />
+              <Route path="/profile" element={<Profile />} />
+
             </Routes>
           </Container>
         </main>
