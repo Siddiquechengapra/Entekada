@@ -74,6 +74,9 @@ export default function OrderScreen() {
       return orderID
     })
   }
+
+  //when the paymant screen in paypal opens inside it you have to use the credentials of paypal sandbox account user,not your normal paypal credentials 
+
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async function (details) {
       try {
