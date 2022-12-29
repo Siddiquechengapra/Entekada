@@ -15,33 +15,41 @@ export default function Profile() {
   const [edit, setEdit] = useState(false);
   const { state: ctxstate, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = ctxstate
-  const [name, setName] = useState(userInfo.name);
-  const [email, setEmail] = useState(userInfo.email);
+  const [name, setName] = useState(userInfo?.name);
+  const [email, setEmail] = useState(userInfo?.email);
+  const [emailToChange, setEmailToChange] = useState(userInfo?.email);
+  const [pwdToChange, setPwdToChange] = useState("");
+  const [confirmpwdToChange, setConfirmpwdToChange] = useState("");
+
   const navigate = useNavigate();
   const redirectInUrl = new URLSearchParams(search).get("redirect");
   const redirect = redirectInUrl ? redirectInUrl : "/";
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.put("/api/profileedit", {
-        name,
-        email,
-      }, {
-        headers: {
-          authorization: `Bearer ${userInfo.token}`
-        }
-      });
+    if (pwdToChange === confirmpwdToChange) {
+      try {
+        const { data } = await axios.put("/api/profileedit", {
+          name,
+          email,
+          emailToChange,
+          pwdToChange
+        }, {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`
+          }
+        });
 
-      ctxDispatch({ type: "USER_EDIT", payload: data });
-      toast.success("Profile edited");
-      setEdit(!edit)
-
-
-      // navigate(redirect);
-    } catch (err) {
-      toast.error(getError(err.response.data));
+        ctxDispatch({ type: "USER_EDIT", payload: data });
+        toast.success("Profile edited");
+        setEdit(!edit)
+      } catch (err) {
+        toast.error(getError(err.response.data));
+      }
+    } else {
+      toast.error("Passwords donot match ");
     }
+
 
   };
 
@@ -50,9 +58,9 @@ export default function Profile() {
   }
   useEffect(() => {
     if (!userInfo) {
-      navigate(redirect || "/")
+      navigate("/signin")
     }
-  }, [userInfo])
+  }, [userInfo, navigate,])
 
 
   return (
@@ -80,10 +88,6 @@ export default function Profile() {
             <Button className="mt-3" onClick={onEdit}>
               Edit
             </Button>
-            {/* <div className="mb-3">
-              New customer ? {""}{" "}
-              <Link to={`/signup?redirect=${redirect}`}>create your account</Link>
-            </div> */}
           </Form.Group>
         </Form>}
       {edit &&
@@ -95,14 +99,33 @@ export default function Profile() {
               required
               onChange={(e) => setName(e.target.value)}
             />
+            <Form.Label>Email</Form.Label>
+
+            <Form.Control
+              value={emailToChange}
+              required
+              onChange={(e) => setEmailToChange(e.target.value)}
+            />
+            <Form.Label>Password</Form.Label>
+
+            <Form.Control
+              type="password"
+              value={pwdToChange}
+              required
+              onChange={(e) => setPwdToChange(e.target.value)}
+            />
+            <Form.Label>Confirm password</Form.Label>
+
+            <Form.Control
+              type="password"
+              value={confirmpwdToChange}
+              required
+              onChange={(e) => setConfirmpwdToChange(e.target.value)}
+            />
 
             <Button className="mt-3" type="submit" >
               Submit
             </Button>
-            {/* <div className="mb-3">
-              New customer ? {""}{" "}
-              <Link to={`/signup?redirect=${redirect}`}>create your account</Link>
-            </div> */}
           </Form.Group>
         </Form>}
     </div>
