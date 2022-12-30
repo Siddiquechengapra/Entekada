@@ -124,7 +124,7 @@ export default function Profile() {
             />
 
             <Button className="mt-3" type="submit" >
-              Submit
+              Update
             </Button>
           </Form.Group>
         </Form>}

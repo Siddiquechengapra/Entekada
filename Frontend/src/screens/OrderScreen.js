@@ -106,7 +106,6 @@ export default function OrderScreen() {
           headers: { authorization: `Bearer ${userInfo.token}` }
         });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
-        console.log("fetched data order ", order)
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
