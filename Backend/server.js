@@ -9,6 +9,7 @@ import userRoutes from "./Routes/UserRoutes.js";
 import orderRoutes from "./Routes/OrderRoutes.js";
 import allOrderRoutes from "./Routes/allOrderRoutes.js";
 import profileEditRoutes from "./Routes/profileEditRoutes.js";
+import path from "path"
 
 const app = express();
 dotenv.config();
@@ -20,7 +21,7 @@ mongoose
 app.use(express.json()); //MUST WHEN USING POST
 app.use(express.urlencoded({ extended: true })); //MUST WHEN USING POST
 
-app.use("/api/keys/paypal",(req,res)=>{
+app.use("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || 'sb')
 })
 app.use("/api/seed", seederRoute);
@@ -30,9 +31,13 @@ app.use("/api/user", userRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/orders", allOrderRoutes);
 app.use("/api/profileedit", profileEditRoutes);
+
+const _dirname = path.resolve()
+app.use(express.static(path.join(_dirname, "/frontend/build")))
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
+app.get("*", (req, res) => res.sendFile(path.join(_dirname, "/frontend/build/index.html")))
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

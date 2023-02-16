@@ -1,0 +1,21 @@
+{
+  "name": "entekada",
+  "version": "1.0.0",
+  "description": "Just trying out !",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "basebuild": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Siddiquechengapra/Entekada.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Siddiquechengapra/Entekada/issues"
+  },
+  "homepage": "https://github.com/Siddiquechengapra/Entekada#readme"
+}
