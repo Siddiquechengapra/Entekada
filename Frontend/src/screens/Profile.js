@@ -47,7 +47,7 @@ export default function Profile() {
         toast.error(getError(err.response.data));
       }
     } else {
-      toast.error("Passwords donot match ");
+      toast.error("Passwords donot match  ");
     }
 
 
