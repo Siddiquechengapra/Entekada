@@ -2,7 +2,7 @@
   "name": "entekada",
   "version": "1.0.0",
   "description": "Just trying out !",
-  "main": "index.js",
+  "main": "Backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd backend && npm install && cd ../Frontend && npm install && npm run build",
